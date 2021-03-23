@@ -1,23 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NS.WebApp.MVC.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NS.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
@@ -28,10 +17,36 @@ namespace NS.WebApp.MVC.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Route("erro/{id:length(3,3)}")]
+        public IActionResult Error(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var modelError = new ErrorViewModel();
+
+            if(id == 500)
+            {
+                modelError.Message = "Ocorreu um erro! Tente novamente mais tarde ou entre em contato com nosso suporte";
+                modelError.Title = "Ocorreu um erro!";
+                modelError.ErrorCode = id;
+            }
+            else if(id == 404)
+            {
+                modelError.Message = "A página que esta tentando acessar não foi encontrada < /br> " +
+                                        "Em caso de dúvidas entre em contato com o nosso suporte";
+                modelError.Title = "Ops! Página não encontrada :(";
+                modelError.ErrorCode = id;
+            }
+            else if(id == 403)
+            {
+                modelError.Message = "Você não tem permissão para fazer isso!";
+                modelError.Title = "Acesso negado!";
+                modelError.ErrorCode = id;
+            }
+            else
+            {
+                return StatusCode(404);
+            }
+
+            return View("Error", modelError);
         }
     }
 }
