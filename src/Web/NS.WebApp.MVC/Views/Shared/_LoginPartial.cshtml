@@ -1,22 +1,17 @@
 ﻿@using NS.WebApp.MVC.Extensions
 @inject IUser AppUser
 
-@if (@AppUser.IsAuthenticated())
+@if (AppUser.IsAuthenticated())
 {
-    <div>
-        <vc:carrinho />
-    </div>
-    <div>
-        <div class="dropdown d-inline-block">
-            <a href="#" class="icontext dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <img class="icon icon-sm rounded-circle">
-            </a> <!-- iconbox // -->
-            <div class="dropdown-menu dropdown-menu-left" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 12px; left: 91px; transform: translate3d(150px, 32px, 0px);">
-                <a class="dropdown-item" href="#">Meu Perfil</a>
-                <a class="dropdown-item" asp-controller="Pedido" asp-action="MeusPedidos">Meus Pedidos</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" asp-controller="Identidade" asp-action="Logout">Sair</a>
-            </div>
+    <div class="dropdown d-inline-block">
+        <a href="#" class="icontext dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <img class="icon icon-sm rounded-circle" src="https://img.icons8.com/clouds/50/000000/user-male.png">
+        </a> <!-- iconbox // -->
+        <div class="dropdown-menu dropdown-menu-left" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 12px; left: 91px; transform: translate3d(150px, 32px, 0px);">
+            <a class="dropdown-item" href="#">Meu Perfil</a>
+            <a class="dropdown-item" href="#">Meus Pedidos</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-controller="Identity" asp-action="Logout">Sair</a>
         </div>
     </div>
 }

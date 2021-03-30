@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using NS.WebApp.MVC.Extensions;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace NS.WebApp.MVC.Models
@@ -6,7 +8,17 @@ namespace NS.WebApp.MVC.Models
     public class UserRegister
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [EmailAddress(ErrorMessage = "O campo {0} está com o formato inválido")]
+        [DisplayName("Nome Completo")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [DisplayName("CPF")]
+        [Cpf]
+        public string Cpf { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [EmailAddress(ErrorMessage = "O campo {0} está em formato inválido")]
+        [DisplayName("E-mail")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]

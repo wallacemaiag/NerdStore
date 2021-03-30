@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NS.WebApi.Core.Identity;
 
 namespace NS.Identity.API.Configuration
 {
@@ -25,7 +26,7 @@ namespace NS.Identity.API.Configuration
 
             app.UseRouting();
 
-            app.UseIdentityConfig();
+            app.UseAuthConfig();
 
             app.UseEndpoints(endpoints =>
             {

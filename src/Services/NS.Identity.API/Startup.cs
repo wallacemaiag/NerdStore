@@ -34,6 +34,8 @@ namespace NS.Identity.API
             services.AddIdentityConfig(Configuration);
 
             services.AddSwaggerConfig();
+
+            services.AddMessageBusConfig(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
