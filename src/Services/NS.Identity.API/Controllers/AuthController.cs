@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NS.Identity.API.Extensions;
+using NS.Core.Messages.Integration;
 using NS.Identity.API.Models;
+using NS.MessageBus;
+using NS.WebApi.Core.Controllers;
+using NS.WebApi.Core.Identity;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,14 +24,18 @@ namespace NS.Identity.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
 
+        private IMessageBus _bus;
+
         public AuthController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IMessageBus bus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _bus = bus;
         }
 
         [HttpPost("nova-conta")]
@@ -47,6 +54,14 @@ namespace NS.Identity.API.Controllers
 
             if (result.Succeeded)
             {
+                var clientResult = await ClientRegister(userRegister);
+
+                if (!clientResult.ValidationResult.IsValid)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return CustomResponse(clientResult.ValidationResult);
+                }
+
                 return CustomResponse(await GenerateJwt(userRegister.Email));
             }
 
@@ -78,6 +93,24 @@ namespace NS.Identity.API.Controllers
 
             AddProcessingError("Usuário ou senha incorretos");
             return CustomResponse();
+        }
+
+        private async Task<ResponseMessage> ClientRegister(UserRegister userRegister)
+        {
+            var user = await _userManager.FindByEmailAsync(userRegister.Email);
+
+            var userRegistred = new RegistredUserIntegrationEvent(
+                Guid.Parse(user.Id), userRegister.Name, userRegister.Email, userRegister.Cpf);
+
+            try
+            {
+                return await _bus.RequestAsync<RegistredUserIntegrationEvent, ResponseMessage>(userRegistred);
+            }
+            catch (Exception)
+            {
+                await _userManager.DeleteAsync(user);
+                throw;
+            }
         }
 
         private async Task<UserResponseLogin> GenerateJwt(string email)

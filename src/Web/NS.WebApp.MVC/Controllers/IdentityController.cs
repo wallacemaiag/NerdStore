@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NS.WebApp.MVC.Models;
-using NS.WebApp.MVC.Service;
+using NS.WebApp.MVC.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,7 +39,7 @@ namespace NS.WebApp.MVC.Controllers
 
             await RealizaLogin(response);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalog");
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace NS.WebApp.MVC.Controllers
 
             await RealizaLogin(response);
 
-            if(string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Catalog");
 
             return LocalRedirect(returnUrl);
         }
@@ -73,7 +73,7 @@ namespace NS.WebApp.MVC.Controllers
         public async Task<IActionResult> Logout(UserLogin userLogin)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalog");
         }
 
         private async Task RealizaLogin(UserResponseLogin user)

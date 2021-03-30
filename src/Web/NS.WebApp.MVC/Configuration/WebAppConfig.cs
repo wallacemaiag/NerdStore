@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NS.WebApp.MVC.Extensions;
-using NS.WebApp.MVC.Service;
+using NS.WebApp.MVC.Services;
 
 namespace NS.WebApp.MVC.Configuration
 {
@@ -12,23 +11,25 @@ namespace NS.WebApp.MVC.Configuration
     {
         public static void AddMvcConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllersWithViews();
-
             services.Configure<AppSettings>(configuration);
+            services.AddControllersWithViews();
         }
 
         public static void UseMvcConfig(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/erro/500");
-                app.UseStatusCodePagesWithRedirects("erro/{0}");
-                app.UseHsts();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+
+            //}
+
+            app.UseExceptionHandler("/erro/500");
+            app.UseStatusCodePagesWithRedirects("/erro/{0}");
+            app.UseHsts();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -36,13 +37,15 @@ namespace NS.WebApp.MVC.Configuration
 
             app.UseIdentityConfig();
 
+            app.UseCulture();
+
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Catalog}/{action=Index}/{id?}");
             });
         }
     }

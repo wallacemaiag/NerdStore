@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace NS.WebApp.MVC.Extensions
 {
@@ -17,7 +15,7 @@ namespace NS.WebApp.MVC.Extensions
         bool HasRole(string role);
         IEnumerable<Claim> GetClaims();
         HttpContext GetHttpContext();
-        
+
     }
 
     public class AspNetUser : IUser

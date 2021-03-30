@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NS.WebApp.MVC.Models;
-using System.Diagnostics;
 
 namespace NS.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        [Route("sistema-indisponivel")]
+        public IActionResult SistemaIndisponivel()
         {
-            return View();
-        }
+            var modelError = new ErrorViewModel
+            {
+                Message = "O sistema está temporariamente indisponível, isto pode ocorrer em momentos de sobrecarga de usuários.",
+                Title = "Sistema Indisponível",
+                ErrorCode = 500,
+            };
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View("Error", modelError);
         }
 
         [Route("erro/{id:length(3,3)}")]
@@ -22,20 +23,20 @@ namespace NS.WebApp.MVC.Controllers
         {
             var modelError = new ErrorViewModel();
 
-            if(id == 500)
+            if (id == 500)
             {
                 modelError.Message = "Ocorreu um erro! Tente novamente mais tarde ou entre em contato com nosso suporte";
                 modelError.Title = "Ocorreu um erro!";
                 modelError.ErrorCode = id;
             }
-            else if(id == 404)
+            else if (id == 404)
             {
                 modelError.Message = "A página que esta tentando acessar não foi encontrada < /br> " +
                                         "Em caso de dúvidas entre em contato com o nosso suporte";
                 modelError.Title = "Ops! Página não encontrada :(";
                 modelError.ErrorCode = id;
             }
-            else if(id == 403)
+            else if (id == 403)
             {
                 modelError.Message = "Você não tem permissão para fazer isso!";
                 modelError.Title = "Acesso negado!";
