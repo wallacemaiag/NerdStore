@@ -42,6 +42,8 @@ namespace NS.Clients.API.Configuration
 
             app.UseRouting();
 
+            app.UseCors("Total");
+
             app.UseAuthConfig();
 
             app.UseEndpoints(endpoints =>

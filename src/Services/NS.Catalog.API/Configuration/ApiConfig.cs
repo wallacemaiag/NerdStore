@@ -22,13 +22,11 @@ namespace NS.Catalog.API.Configuration
             {
                 options.AddPolicy("Total",
                     builder =>
-                    builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
             });
-
-            services.AddJwtConfig(configuration);
         }
 
         public static void UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,6 +39,8 @@ namespace NS.Catalog.API.Configuration
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("Total");
 
             app.UseAuthConfig();
 

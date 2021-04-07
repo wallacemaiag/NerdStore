@@ -3,50 +3,43 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using NS.Cart.API.Configuration;
+using NS.WebApi.Core.Identity;
 
 namespace NS.Cart.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IHostEnvironment hostEnvironment)
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(hostEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true, true)
+                .AddEnvironmentVariables();
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            if (hostEnvironment.IsDevelopment())
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NS.Cart.API", Version = "v1" });
-            });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NS.Cart.API v1"));
+                builder.AddUserSecrets<Startup>();
             }
 
-            app.UseHttpsRedirection();
+            Configuration = builder.Build();
+        }
 
-            app.UseRouting();
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddApiConfig(Configuration);
+            services.AddJwtConfig(Configuration);
+            services.AddSwaggerConfig();
+            services.RegisterService();
+        }
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseSwaggerConfig();
+            app.UseApiConfig(env);
         }
     }
 }

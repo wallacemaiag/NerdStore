@@ -11,6 +11,7 @@ namespace NS.Identity.API.Configuration
         public static IServiceCollection AddApiConfig(this IServiceCollection services)
         {
             services.AddControllers();
+
             return services;
         }
 

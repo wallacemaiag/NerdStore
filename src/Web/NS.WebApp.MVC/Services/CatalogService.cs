@@ -13,9 +13,8 @@ namespace NS.WebApp.MVC.Services
 
         public CatalogService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
-            httpClient.BaseAddress = new Uri(settings.Value.CatalogUrl);
-
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri(settings.Value.CatalogUrl);
         }
 
         public async Task<IEnumerable<ProductViewModel>> GetAll()

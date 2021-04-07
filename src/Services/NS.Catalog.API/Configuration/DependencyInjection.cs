@@ -7,7 +7,7 @@ namespace NS.Catalog.API.Configuration
 {
     public static class DependencyInjection
     {
-        public static void RegisterServices(this IServiceCollection services)
+        public static void RegisterService(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<CatalogContext>();

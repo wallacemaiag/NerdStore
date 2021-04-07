@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NS.WebApp.MVC.Controllers
 {
-    public class CatalogController : Controller
+    public class CatalogController : MainController
     {
         private readonly ICatalogService _catalogService;
 

@@ -19,5 +19,15 @@ namespace NS.WebApp.MVC.Controllers
 
             return false;
         }
+
+        protected void AddErrorValidation(string message)
+        {
+            ModelState.AddModelError(string.Empty, message);
+        }
+
+        protected bool ValidOperation()
+        {
+            return ModelState.ErrorCount == 0;
+        }
     }
 }

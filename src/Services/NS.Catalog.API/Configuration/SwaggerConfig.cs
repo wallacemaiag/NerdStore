@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
@@ -47,7 +46,7 @@ namespace NS.Catalog.API.Configuration
             });
         }
 
-        public static void UseSwaggerConfig(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static void UseSwaggerConfig(this IApplicationBuilder app)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));

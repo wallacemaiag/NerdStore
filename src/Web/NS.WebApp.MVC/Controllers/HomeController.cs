@@ -3,7 +3,7 @@ using NS.WebApp.MVC.Models;
 
 namespace NS.WebApp.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : MainController
     {
         [Route("sistema-indisponivel")]
         public IActionResult SistemaIndisponivel()

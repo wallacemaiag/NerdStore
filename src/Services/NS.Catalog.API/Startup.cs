@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NS.Catalog.API.Configuration;
+using NS.WebApi.Core.Identity;
 
 namespace NS.Catalog.API
 {
@@ -30,13 +31,14 @@ namespace NS.Catalog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApiConfig(Configuration);
+            services.AddJwtConfig(Configuration);
             services.AddSwaggerConfig();
-            services.RegisterServices();
+            services.RegisterService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwaggerConfig(env);
+            app.UseSwaggerConfig();
             app.UseApiConfig(env);
         }
     }
