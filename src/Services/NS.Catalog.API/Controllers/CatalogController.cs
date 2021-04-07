@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NS.Catalog.API.Models;
 using NS.WebApi.Core.Controllers;
-using NS.WebApi.Core.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace NS.Catalog.API.Controllers
             return await _productRepository.GetAll();
         }
 
-        [ClaimsAuthorize("Catalogo", "Ler")]
+        [AllowAnonymous]
         [HttpGet("catalog/product/{id}")]
         public async Task<Product> ProductDetails(Guid id)
         {
